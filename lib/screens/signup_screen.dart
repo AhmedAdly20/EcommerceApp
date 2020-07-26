@@ -3,10 +3,13 @@ import 'package:ecommerce/screens/login_screen.dart';
 import 'package:ecommerce/widgets/custom_logo.dart';
 import 'package:ecommerce/widgets/cutsom_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:ecommerce/services/auth.dart';
 
 class SignupScreen extends StatelessWidget {
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   static String id = 'SignupScreen';
+  String _email,_password;
+  final _auth = Auth();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -28,6 +31,9 @@ class SignupScreen extends StatelessWidget {
               height: height*0.01,
             ),
             CustomTextField(
+              onClick: (value){
+                _email = value;
+              },
               hint: 'Enter Your E-Mail',
               icon: Icons.email
             ),
@@ -35,6 +41,9 @@ class SignupScreen extends StatelessWidget {
               height: height*0.01,
             ),
             CustomTextField(
+              onClick: (value){
+                _password = value;
+              },
               hint: 'Enter Your Password',
               icon: Icons.lock,
             ),
@@ -47,9 +56,13 @@ class SignupScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)
                 ),
-                onPressed: (){
+                onPressed: () async{
                   if (_globalKey.currentState.validate()) {
-                    // Todo
+                    _globalKey.currentState.save();
+                    print(_email);
+                    print(_password);
+                    final _authResult = await _auth.signUp(_email, _password);
+                    print(_authResult);
                   }
                 },
                 child: Text(
