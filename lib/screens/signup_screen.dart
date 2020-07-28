@@ -1,6 +1,7 @@
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/provider/modelHud.dart';
 import 'package:ecommerce/screens/login_screen.dart';
+import 'package:ecommerce/screens/user/homePage.dart';
 import 'package:ecommerce/widgets/custom_logo.dart';
 import 'package:ecommerce/widgets/cutsom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class SignupScreen extends StatelessWidget {
                 height: height * 0.1,
               ),
               CustomTextField(
+                onClick: (){},
                 hint: 'Enter Your Name',
                 icon: Icons.perm_identity,
               ),
@@ -72,7 +74,7 @@ class SignupScreen extends StatelessWidget {
                             final _authResult =
                                 await _auth.signUp(_email, _password);
                             modelHud.changeIsLoading(false);
-                            // Navigate to home page
+                            Navigator.pushNamed(context, HomePage.id);
                           } on PlatformException catch (e) {
                             modelHud.changeIsLoading(false);
                             Scaffold.of(context).showSnackBar(SnackBar(

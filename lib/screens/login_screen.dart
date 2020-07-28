@@ -1,5 +1,8 @@
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/provider/adminMode.dart';
 import 'package:ecommerce/provider/modelHud.dart';
+import 'package:ecommerce/screens/admin/adminHome.dart';
+import 'package:ecommerce/screens/user/homePage.dart';
 import 'package:ecommerce/screens/signup_screen.dart';
 import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/widgets/custom_logo.dart';
@@ -14,6 +17,8 @@ class LoginScreen extends StatelessWidget {
   static String id = 'LoginScreen';
   String _email, _password;
   final _auth = Auth();
+  bool isAdmin = false;
+  final adminPassword = 'admin123';
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -55,25 +60,7 @@ class LoginScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
                     onPressed: () async {
-                      final modelHud =
-                          Provider.of<ModelHud>(context, listen: false);
-                      modelHud.changeIsLoading(true);
-                      if (_globalKey.currentState.validate()) {
-                        try {
-                          _globalKey.currentState.save();
-                          final _result = await _auth.signIn(_email, _password);
-                          modelHud.changeIsLoading(false);
-                          // navigator to home
-                        } on PlatformException catch (e) {
-                          modelHud.changeIsLoading(false);
-                          Scaffold.of(context).showSnackBar(SnackBar(
-                            content: Text(
-                              e.message,
-                            ),
-                          ));
-                        }
-                      }
-                      modelHud.changeIsLoading(false);
+                      _validate(context);
                     },
                     child: Text(
                       'Login',
@@ -108,11 +95,84 @@ class LoginScreen extends StatelessWidget {
                     ),
                   )
                 ],
-              )
-            ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: (){
+                          Provider.of<AdminMode>(context,listen: false).changeIsAdmin(true);
+                        },
+                        child: Text(
+                          'Iam an Admin',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Provider.of<AdminMode>(context).isAdmin ? kMainColor : Colors.white
+                          ),
+                        ),
+                      )
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: (){
+                          Provider.of<AdminMode>(context,listen: false).changeIsAdmin(false);
+                        },
+                        child: Text(
+                          'Iam a User',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Provider.of<AdminMode>(context).isAdmin ? Colors.white : kMainColor
+                          ),
+                        ),
+                      )
+                    ),
+                  ],
+                ),
+              ),
+            ]
           ),
         ),
       ),
     );
   }
+
+  void _validate(BuildContext context) async{
+    final modelhud = Provider.of<ModelHud>(context, listen: false);
+    modelhud.changeIsLoading(true);
+    if (_globalKey.currentState.validate()) {
+      _globalKey.currentState.save();
+      // if he is admin
+      if (Provider.of<AdminMode>(context, listen: false).isAdmin) {
+        if (_password == adminPassword) {
+          try {
+            await _auth.signIn(_email.trim(), _password.trim());
+            Navigator.pushNamed(context, AdminHome.id);
+          } catch (e) {
+            modelhud.changeIsLoading(false);
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(e.message),
+            ));
+          }
+        } else {
+          modelhud.changeIsLoading(false);
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text('Something went wrong !'),
+          ));
+        }
+      } else {
+        try {
+          await _auth.signIn(_email, _password);
+          Navigator.pushNamed(context, HomePage.id);
+        } catch (e) {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(e.message),
+          ));
+        }
+      }
+    }
+    modelhud.changeIsLoading(false);
+  }
+
 }
