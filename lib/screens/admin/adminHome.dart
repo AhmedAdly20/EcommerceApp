@@ -1,3 +1,5 @@
+import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/screens/admin/addProduct.dart';
 import 'package:flutter/material.dart';
 
 class AdminHome extends StatefulWidget {
@@ -10,8 +12,29 @@ class _AdminHomeState extends State<AdminHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('AdminHomePage'),
+      backgroundColor: kMainColor,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(
+            width: double.infinity,
+          ),
+          RaisedButton(
+            onPressed: (){
+              Navigator.pushNamed(context, AddProduct.id);
+            },
+            child: Text('Add Product'),
+          ),
+          RaisedButton(
+            onPressed: (){},
+            child: Text('Edit Product'),
+          ),
+          RaisedButton(
+            onPressed: (){},
+            child: Text('View Orders'),
+          ),
+        ],
       ),
     );
   }

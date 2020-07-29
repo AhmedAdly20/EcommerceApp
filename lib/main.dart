@@ -1,5 +1,6 @@
 import 'package:ecommerce/provider/adminMode.dart';
 import 'package:ecommerce/provider/modelHud.dart';
+import 'package:ecommerce/screens/admin/addProduct.dart';
 import 'package:ecommerce/screens/admin/adminHome.dart';
 import 'package:ecommerce/screens/user/homePage.dart';
 import 'package:ecommerce/screens/signup_screen.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
             SignupScreen.id: (context)=> SignupScreen(),
             HomePage.id: (context) =>HomePage(),
             AdminHome.id: (context) =>AdminHome(),
+            AddProduct.id: (context) =>AddProduct(),
           },
       ),
     );
