@@ -14,4 +14,8 @@ class Store{
       kProductLocation : product.pLocation,
     });
   }
+
+  Stream<QuerySnapshot> loadProducts() {
+    return _firestore.collection(kProductsCollection).snapshots();
+  }
 }

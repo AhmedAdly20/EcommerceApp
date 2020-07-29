@@ -1,6 +1,7 @@
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/screens/admin/addProduct.dart';
 import 'package:flutter/material.dart';
+import 'package:ecommerce/screens/admin/editProduct.dart';
 
 class AdminHome extends StatefulWidget {
   static String id = 'AdminHome';
@@ -27,7 +28,9 @@ class _AdminHomeState extends State<AdminHome> {
             child: Text('Add Product'),
           ),
           RaisedButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.pushNamed(context, EditProduct.id);
+            },
             child: Text('Edit Product'),
           ),
           RaisedButton(
