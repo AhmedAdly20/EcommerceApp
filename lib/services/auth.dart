@@ -14,4 +14,8 @@ class Auth {
         email: email, password: password);
     return authResult;
   }
+
+  Future<FirebaseUser> getUser() async {
+    return await _auth.currentUser();
+  }
 }
