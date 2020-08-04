@@ -4,16 +4,16 @@ class Product {
   String pLocation;
   String pDescription;
   String pCategory;
-  // String pId;
+  String pId;
   // int pQuantity;
   Product(
       {
       // this.pQuantity,
-      // this.pId,
       this.pName,
       this.pCategory,
       this.pDescription,
       this.pLocation,
-      this.pPrice
+      this.pPrice,
+      this.pId,
       });
 }
