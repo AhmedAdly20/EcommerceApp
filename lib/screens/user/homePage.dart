@@ -5,8 +5,11 @@ import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/product.dart';
 import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/services/store.dart';
+import 'package:ecommerce/widgets/productView.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../../functions.dart';
 
 class HomePage extends StatefulWidget {
   static String id = 'HomePage';
@@ -32,7 +35,7 @@ class _HomePageState extends State<HomePage> {
               type: BottomNavigationBarType.fixed,
               fixedColor: kMainColor,
               currentIndex: _bottomBarIndex,
-              onTap: (value){
+              onTap: (value) {
                 setState(() {
                   _bottomBarIndex = value;
                 });
@@ -104,9 +107,9 @@ class _HomePageState extends State<HomePage> {
             body: TabBarView(
               children: <Widget>[
                 jacketsView(),
-                Text('data'),
-                Text('data'),
-                Text('data'),
+                ProductsView(kTrousers, _products),
+                ProductsView(kTshirts, _products),
+                ProductsView(kShoes, _products),
               ],
             ),
           ),
@@ -162,6 +165,9 @@ class _HomePageState extends State<HomePage> {
                 pPrice: data[kProductPrice],
               ));
             }
+            _products = [...products];
+            products.clear();
+            products = getProductByCategory(kJackets,_products);
             return GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, childAspectRatio: 0.8),
