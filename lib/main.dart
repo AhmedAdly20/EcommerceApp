@@ -6,6 +6,7 @@ import 'package:ecommerce/screens/admin/manageProduct.dart';
 import 'package:ecommerce/screens/admin/adminHome.dart';
 import 'package:ecommerce/screens/user/homePage.dart';
 import 'package:ecommerce/screens/signup_screen.dart';
+import 'package:ecommerce/screens/user/productInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce/screens/login_screen.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
             AddProduct.id: (context) =>AddProduct(),
             ManageProduct.id : (context) =>ManageProduct(),
             EditProduct.id : (context) =>EditProduct(),
+            ProductInfo.id : (context) => ProductInfo(),
           },
       ),
     );

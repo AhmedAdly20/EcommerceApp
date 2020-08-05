@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/product.dart';
+import 'package:ecommerce/screens/user/productInfo.dart';
 import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/services/store.dart';
 import 'package:ecommerce/widgets/productView.dart';
@@ -134,7 +135,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-        )
+        )      
       ],
     );
   }
@@ -167,7 +168,7 @@ class _HomePageState extends State<HomePage> {
             }
             _products = [...products];
             products.clear();
-            products = getProductByCategory(kJackets,_products);
+            products = getProductByCategory(kJackets, _products);
             return GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, childAspectRatio: 0.8),
@@ -175,6 +176,9 @@ class _HomePageState extends State<HomePage> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, ProductInfo.id,arguments: products[index]);
+                  },
                   child: Stack(
                     children: <Widget>[
                       Positioned.fill(

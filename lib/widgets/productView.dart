@@ -1,4 +1,5 @@
 import 'package:ecommerce/models/product.dart';
+import 'package:ecommerce/screens/user/productInfo.dart';
 import 'package:flutter/material.dart';
 
 import '../functions.dart';
@@ -15,7 +16,7 @@ Widget ProductsView(String pCategory, List<Product> allProducts) {
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: GestureDetector(
         onTap: () {
-          
+          Navigator.pushNamed(context, ProductInfo.id,arguments: products[index]);
         },
         child: Stack(
           children: <Widget>[
