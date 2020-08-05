@@ -1,6 +1,9 @@
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/product.dart';
+import 'package:ecommerce/provider/cartItem.dart';
+import 'package:ecommerce/screens/user/cartScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductInfo extends StatefulWidget {
   static String id = 'ProductInfo';
@@ -31,8 +34,22 @@ class _ProductInfoState extends State<ProductInfo> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Icon(Icons.arrow_back_ios),
-                  Icon(Icons.shopping_cart),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, CartScreen.id);
+                    },
+                    child: Icon(
+                      Icons.shopping_cart,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -121,14 +138,18 @@ class _ProductInfoState extends State<ProductInfo> {
                   ),
                   minWidth: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.11,
-                  child: RaisedButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Add To Cart'.toUpperCase(),
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  child: Builder(
+                    builder: (context) => RaisedButton(
+                      onPressed: () {
+                        addToCart(context, product);
+                      },
+                      child: Text(
+                        'Add To Cart'.toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      color: kMainColor,
                     ),
-                    color: kMainColor,
                   ),
                 ),
               ],
@@ -152,5 +173,27 @@ class _ProductInfoState extends State<ProductInfo> {
     setState(() {
       _quantity++;
     });
+  }
+
+  void addToCart(context, product) {
+    CartItem cartItem = Provider.of<CartItem>(context, listen: false);
+    product.pQuantity = _quantity;
+    bool exist = false;
+    var productsInCart = cartItem.products;
+    for (var productInCart in productsInCart) {
+      if (productInCart.pName == product.pName) {
+        exist = true;
+      }
+    }
+    if (exist) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('you\'ve added this item before'),
+      ));
+    } else {
+      cartItem.addProduct(product);
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Added to Cart'),
+      ));
+    }
   }
 }

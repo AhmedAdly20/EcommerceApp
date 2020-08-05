@@ -5,15 +5,15 @@ class Product {
   String pDescription;
   String pCategory;
   String pId;
-  // int pQuantity;
+  int pQuantity;
   Product(
       {
-      // this.pQuantity,
       this.pName,
       this.pCategory,
       this.pDescription,
       this.pLocation,
       this.pPrice,
       this.pId,
+      this.pQuantity,
       });
 }

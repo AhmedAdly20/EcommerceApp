@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../functions.dart';
+import 'cartScreen.dart';
 
 class HomePage extends StatefulWidget {
   static String id = 'HomePage';
@@ -130,12 +131,19 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Icon(Icons.shopping_cart)
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, CartScreen.id);
+                    },
+                    child: Icon(
+                      Icons.shopping_cart,
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
-        )      
+        )
       ],
     );
   }
@@ -177,7 +185,8 @@ class _HomePageState extends State<HomePage> {
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, ProductInfo.id,arguments: products[index]);
+                    Navigator.pushNamed(context, ProductInfo.id,
+                        arguments: products[index]);
                   },
                   child: Stack(
                     children: <Widget>[
