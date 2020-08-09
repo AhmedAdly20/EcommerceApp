@@ -3,6 +3,7 @@ import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/product.dart';
 import 'package:ecommerce/provider/cartItem.dart';
 import 'package:ecommerce/screens/user/productInfo.dart';
+import 'package:ecommerce/services/store.dart';
 import 'package:ecommerce/widgets/custom_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -131,19 +132,23 @@ class CartScreen extends StatelessWidget {
               }
             },
           ),
-          ButtonTheme(
-            minWidth: screenWidth,
-            height: screenHeight * .08,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10),
-                topLeft: Radius.circular(10),
+          Builder(
+            builder: (context) => ButtonTheme(
+              minWidth: screenWidth,
+              height: screenHeight * .08,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  topLeft: Radius.circular(10),
+                ),
               ),
-            ),
-            child: RaisedButton(
-              onPressed: () {},
-              child: Text('Order'.toUpperCase()),
-              color: kMainColor,
+              child: RaisedButton(
+                onPressed: () {
+                  showCustomDialog(products, context);
+                },
+                child: Text('Order'.toUpperCase()),
+                color: kMainColor,
+              ),
             ),
           )
         ],
@@ -178,6 +183,56 @@ class CartScreen extends StatelessWidget {
           child: Text('Delete'),
         ),
       ],
+    );
+  }
+
+  getTotalPrice(List<Product> products) {
+    var price = 0;
+    for (var product in products) {
+      price += product.pQuantity * int.parse(product.pPrice);
+    }
+    return price;
+  }
+
+  void showCustomDialog(List<Product> products, context) async {
+    var price = getTotalPrice(products);
+    var address;
+    AlertDialog alertDialog = AlertDialog(
+      title: Text('Total Price = \$ $price'),
+      content: TextField(
+        onChanged: (value) {
+          address = value;
+        },
+        decoration: InputDecoration(hintText: 'Enter Your Address'),
+      ),
+      actions: [
+        MaterialButton(
+          onPressed: () {
+            try {
+              Store _store = Store();
+              _store.storeOrders({
+                kTotallPrice: price,
+                kAddress: address,
+              }, products);
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Your Order Is Done Wait For It'),
+                ),
+              );
+              Navigator.pop(context);
+            } catch (e) {
+              print(e.message);
+            }
+          },
+          child: Text('Confirm'),
+        )
+      ],
+    );
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return alertDialog;
+      },
     );
   }
 }
