@@ -133,11 +133,11 @@ class _ProductInfoState extends State<ProductInfo> {
                 ButtonTheme(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20),
-                        topLeft: Radius.circular(20)),
+                        topRight: Radius.circular(10),
+                        topLeft: Radius.circular(10)),
                   ),
                   minWidth: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.11,
+                  height: MediaQuery.of(context).size.height * 0.08,
                   child: Builder(
                     builder: (context) => RaisedButton(
                       onPressed: () {
