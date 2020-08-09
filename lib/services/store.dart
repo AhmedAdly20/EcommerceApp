@@ -43,4 +43,16 @@ class Store {
       });
     }
   }
+
+  Stream<QuerySnapshot> loadOrders() {
+    return _firestore.collection(kOrders).snapshots();
+  }
+
+  Stream<QuerySnapshot> loadOrderDetails(documentId) {
+    return _firestore
+        .collection(kOrders)
+        .document(documentId)
+        .collection(kOrderDetails)
+        .snapshots();
+  }
 }

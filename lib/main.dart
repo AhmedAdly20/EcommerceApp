@@ -1,10 +1,12 @@
 import 'package:ecommerce/provider/adminMode.dart';
 import 'package:ecommerce/provider/cartItem.dart';
 import 'package:ecommerce/provider/modelHud.dart';
+import 'package:ecommerce/screens/admin/OrdersScreen.dart';
 import 'package:ecommerce/screens/admin/addProduct.dart';
 import 'package:ecommerce/screens/admin/editProduct.dart';
 import 'package:ecommerce/screens/admin/manageProduct.dart';
 import 'package:ecommerce/screens/admin/adminHome.dart';
+import 'package:ecommerce/screens/admin/order_details.dart';
 import 'package:ecommerce/screens/user/cartScreen.dart';
 import 'package:ecommerce/screens/user/homePage.dart';
 import 'package:ecommerce/screens/signup_screen.dart';
@@ -42,6 +44,8 @@ class MyApp extends StatelessWidget {
             EditProduct.id : (context) =>EditProduct(),
             ProductInfo.id : (context) => ProductInfo(),
             CartScreen.id : (context) => CartScreen(),
+            OrdersScreen.id : (context) => OrdersScreen(),
+            OrderDetails.id : (context) => OrderDetails(),
           },
       ),
     );

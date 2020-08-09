@@ -1,4 +1,5 @@
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/screens/admin/OrdersScreen.dart';
 import 'package:ecommerce/screens/admin/addProduct.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce/screens/admin/manageProduct.dart';
@@ -34,7 +35,9 @@ class _AdminHomeState extends State<AdminHome> {
             child: Text('Edit Product'),
           ),
           RaisedButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.pushNamed(context, OrdersScreen.id);
+            },
             child: Text('View Orders'),
           ),
         ],
