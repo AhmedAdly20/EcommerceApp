@@ -1,3 +1,4 @@
+import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/provider/adminMode.dart';
 import 'package:ecommerce/provider/cartItem.dart';
 import 'package:ecommerce/provider/modelHud.dart';
@@ -14,40 +15,58 @@ import 'package:ecommerce/screens/user/productInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce/screens/login_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-main()=>runApp(MyApp());
+main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  bool isUserLoggedIn = false;
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ModelHud>(
-          create: (context) => ModelHud(),
-        ),
-        ChangeNotifierProvider<AdminMode>(
-          create: (context) => AdminMode(),
-        ),
-        ChangeNotifierProvider<CartItem>(
-          create: (context) => CartItem(),
-        ),
-      ],
-      child: MaterialApp(
-          initialRoute: LoginScreen.id,
-          routes: {
-            LoginScreen.id: (context)=> LoginScreen(),
-            SignupScreen.id: (context)=> SignupScreen(),
-            HomePage.id: (context) =>HomePage(),
-            AdminHome.id: (context) =>AdminHome(),
-            AddProduct.id: (context) =>AddProduct(),
-            ManageProduct.id : (context) =>ManageProduct(),
-            EditProduct.id : (context) =>EditProduct(),
-            ProductInfo.id : (context) => ProductInfo(),
-            CartScreen.id : (context) => CartScreen(),
-            OrdersScreen.id : (context) => OrdersScreen(),
-            OrderDetails.id : (context) => OrderDetails(),
-          },
-      ),
+    return FutureBuilder<SharedPreferences>(
+      future: SharedPreferences.getInstance(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return MaterialApp(
+            home: Scaffold(
+              body: Center(
+                child: Text('Loading...'),
+              ),
+            ),
+          );
+        } else {
+          isUserLoggedIn = snapshot.data.getBool(kKeepMeLoggedIn) ?? false;
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider<ModelHud>(
+                create: (context) => ModelHud(),
+              ),
+              ChangeNotifierProvider<AdminMode>(
+                create: (context) => AdminMode(),
+              ),
+              ChangeNotifierProvider<CartItem>(
+                create: (context) => CartItem(),
+              ),
+            ],
+            child: MaterialApp(
+              initialRoute: isUserLoggedIn ? HomePage.id :LoginScreen.id,
+              routes: {
+                LoginScreen.id: (context) => LoginScreen(),
+                SignupScreen.id: (context) => SignupScreen(),
+                HomePage.id: (context) => HomePage(),
+                AdminHome.id: (context) => AdminHome(),
+                AddProduct.id: (context) => AddProduct(),
+                ManageProduct.id: (context) => ManageProduct(),
+                EditProduct.id: (context) => EditProduct(),
+                ProductInfo.id: (context) => ProductInfo(),
+                CartScreen.id: (context) => CartScreen(),
+                OrdersScreen.id: (context) => OrdersScreen(),
+                OrderDetails.id: (context) => OrderDetails(),
+              },
+            ),
+          );
+        }
+      },
     );
   }
 }

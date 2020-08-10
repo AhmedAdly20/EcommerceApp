@@ -3,12 +3,14 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/product.dart';
+import 'package:ecommerce/screens/login_screen.dart';
 import 'package:ecommerce/screens/user/productInfo.dart';
 import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/services/store.dart';
 import 'package:ecommerce/widgets/productView.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../functions.dart';
 import 'cartScreen.dart';
@@ -37,7 +39,13 @@ class _HomePageState extends State<HomePage> {
               type: BottomNavigationBarType.fixed,
               fixedColor: kMainColor,
               currentIndex: _bottomBarIndex,
-              onTap: (value) {
+              onTap: (value) async{
+                if (value == 2) {
+                  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                  sharedPreferences.clear();
+                  await _auth.signOut();
+                  Navigator.popAndPushNamed(context, LoginScreen.id);
+                }
                 setState(() {
                   _bottomBarIndex = value;
                 });
@@ -45,19 +53,15 @@ class _HomePageState extends State<HomePage> {
               items: [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person),
-                  title: Text('Jackets'),
+                  title: Text('Test'),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person),
-                  title: Text('data'),
+                  title: Text('Test'),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  title: Text('data'),
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  title: Text('data'),
+                  icon: Icon(Icons.close),
+                  title: Text('Log Out'),
                 ),
               ],
             ),

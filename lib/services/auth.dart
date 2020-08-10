@@ -18,4 +18,8 @@ class Auth {
   Future<FirebaseUser> getUser() async {
     return await _auth.currentUser();
   }
+
+  Future<void> signOut() async{
+    await _auth.signOut();
+  }
 }
